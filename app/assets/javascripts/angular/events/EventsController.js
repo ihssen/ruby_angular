@@ -24,20 +24,17 @@ app.controller('EventsCtrl', ['$scope','Event', function($scope,Event) {
   );
 
   $scope.event = {};
-};
-valid = function() {
-  return !!$scope.event &&!!$scope.event.name && !!$scope.event.event_date &&!!$scope.event.description && !!$scope.event.place;
-}
+  };
+  valid = function() {
+    return !!$scope.event &&!!$scope.event.name && !!$scope.event.event_date &&!!$scope.event.description && !!$scope.event.place;
+  }
 $scope.editing = {};
 
 $scope.filterEvents = function() {
   Event.search({query: $scope.search},
     function(response, _headers) {
       $scope.events = response;
-      // angular.forEach($scope.events,function(event){
-      //   console.log("new events list",event)
-      //
-      // });
+
     }
   );
 };
@@ -94,7 +91,7 @@ $scope.sortEvents = function(sort_by, order) {
         }
       }
     );
-  };
+};
 
 $scope.updateArrowOrder = function() {
   $scope.order = $scope.sorting.order == 'asc' ? 'up' : 'down';
