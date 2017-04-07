@@ -1,0 +1,79 @@
+.container
+  .jumbotron
+    %h1 AngularJS Tutorial
+    %p by Ihsen
+
+  .row{ ng_controller: 'EventsCtrl' }
+    .row
+      .col-md-4
+        %input#search.form-control{ placeholder: "search phrase here..",
+                                    type: 'text',
+                                    ng: { model: "search", change: "filterEvent()" }}
+      .col-md-8
+        %form.form-inline{ ng_submit: "addEvent" }
+          .form-groupe
+            %input.form-control{ type: "text", name: "name", placeholder: "Name", ng_model: "event.name" }
+          .form-groupe
+            %input.form-control{ type: "text", name: "place", placeholder: "Place", ng_model: "event.place" }
+          .form-groupe
+            %input.form-control{ type: "text", name: "event_date", placeholder: "Event date", ng_model: "event.event_date" }
+          .form-groupe
+            %input.form-control{ type: "text", name: "description", placeholder: "Description", ng_model: "event.description" }
+          %button.btn.btn-primary{ type: "submit" }Add
+    .row
+      .col-md-12
+        %table.table.table-striped
+          %thead
+            %tr
+              %th.col-md-3{ ng: { click: "sortEvent('name',sorting.order)", class: "sorting.sort_by == 'name' ? 'text-underline' : ''" }}
+                Name
+                %span.glyphicon{ ng:{ if: "sorting.sort_by == 'name'", class: "glyphicon-{{order}}" },  aria_hidden: "true" }
+              %th.col-md-3{ ng_click: "sortEvent('event_date',sorting.order)", ng_class: "sorting.sort_by == 'event_date' ? 'text-underline' : ''" }
+                Event Date
+                %span.glyphicon{ ng_if: "sorting.sort_by == 'event_date'", ng_class: "glyphicon-{{order}}",  aria_hidden: "true" }
+              %th.col-md-3{ ng_click: "sortEvent('place',sorting.order)", ng_class: "sorting.sort_by == 'name' ? 'text-underline' : ''" }
+                Place
+                %span.glyphicon{ ng_if: "sorting.sort_by == 'place'", ng_class: "glyphicon-{{order}}",  aria_hidden: "true"}
+              %th.col-md-3{ ng_click: "sortEvent('description',sorting.order)", ng_class: "sorting.sort_by == 'name' ? 'text-underline' : ''" }
+                Description
+                %span.glyphicon{ ng_if: "sorting.sort_by == 'description'", ng_class: "glyphicon-{{order}}",  aria_hidden: "true" }
+              %th.col-md-2 Action
+          %tbody
+            %tr{ ng_repeat: "event in events", ng_include: "toggleForm(event)" }
+    :plain
+            <script type="text/ng-template" id="form">
+              <td>
+                <input ng-model="editing.name" type="text" class="form-control" name="name" />
+              </td>
+              <td>
+                <input ng-model="editing.event_date" type="text" class="form-control" name="event_date" />
+              </td>
+              <td>
+                <input ng-model="editing.place" type="text" class="form-control" name="place" />
+              </td>
+              <td>
+                <input ng-model="editing.description" type="text" class="form-control" name="description" />
+              </td>
+              <td>
+                <button ng-click="hideForm()" class="btn btn-default btn-xs">Cancel</button>
+                <button ng-click="updateEvent($index)" class="btn btn-success btn-xs">Save</button>
+              </td>
+            </script>
+            <script type="text/ng-template" id="row">
+              <td>
+                <span>{{event.name}}</span>
+              </td>
+              <td>
+                <span>{{event.event_date}}</span>
+              </td>
+              <td>
+                <span>{{event.place}}</span>
+              </td>
+              <td>
+                <span>{{event.description}}</span>
+              </td>
+              <td>
+                <button ng-click="editEvent(event)" class="btn btn-primary btn-xs">Edit</button>
+                <button ng-click="destroyEvent(event, $index)" class="btn btn-danger btn-xs">Destroy</button>
+              </td>
+            </script>
